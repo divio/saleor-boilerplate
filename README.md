@@ -13,9 +13,15 @@ You can disable this functionality by removing `aldryn-sso` from `INSTALLED_ADDO
 
 Sending emails
 -----------------
-You need to configure your project to be able to send an emails. Check our article about how to achieve it:
+You need to configure your project to be able to send an emails. You should set `EMAIL_URL` as your env variable.
 
+More details you will find on [dj-email-url package](https://github.com/migonzalvar/dj-email-url)
+
+Check our article about how to achieve it:
 [Sending email in Divio Cloud applications](https://docs.divio.com/en/latest/reference/coding-sending-email.html)
+
+When you are using external SMTP it should looks like:
+```submission://smtp_user:smtp_pass@smtp_host:port```
 
 Contribution
 ------------
