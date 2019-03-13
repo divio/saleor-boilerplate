@@ -277,11 +277,11 @@ PAYMENT_MODEL = 'saleor.order.Payment'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
-# # Do not use cached session if locmem cache backend is used but fallback to use
-# # default django.contrib.sessions.backends.db instead
-# if not CACHES['default']['BACKEND'].endswith('LocMemCache'):
-#     SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-#
+# Do not use cached session if locmem cache backend is used but fallback to use
+# default django.contrib.sessions.backends.db instead
+if not CACHES['default']['BACKEND'].endswith('LocMemCache'):
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'}
 
@@ -299,11 +299,11 @@ bootstrap4 = {
     'form_renderers': {
         'default': 'saleor.core.utils.form_renderer.FormRenderer'}}
 
-# ALLOWED_HOSTS = get_list(
-#     os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1'))
-# ALLOWED_GRAPHQL_ORIGINS = os.environ.get('ALLOWED_GRAPHQL_ORIGINS', '*')
-#
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+ALLOWED_HOSTS = get_list(
+    os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1'))
+ALLOWED_GRAPHQL_ORIGINS = os.environ.get('ALLOWED_GRAPHQL_ORIGINS', '*')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
