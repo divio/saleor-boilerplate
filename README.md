@@ -11,9 +11,11 @@ To set `aldryn-sso` login form as default, change `LOGIN_URL` in your settings t
 
 You can disable this functionality by removing `aldryn-sso` from `INSTALLED_ADDONS` in settings.py.
 
-Celery and emails
+Sending emails
 -----------------
-Sending emails using celery tasks is not working on this configuration.
+You need to configure your project to be able to send an emails. Check our article about how to achieve it:
+
+[Sending email in Divio Cloud applications](https://docs.divio.com/en/latest/reference/coding-sending-email.html)
 
 Contribution
 ------------
