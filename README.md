@@ -11,16 +11,16 @@ To set `aldryn-sso` login form as default, change `LOGIN_URL` in your settings t
 
 You can disable this functionality by removing `aldryn-sso` from `INSTALLED_ADDONS` in settings.py.
 
-Sending emails
+Sending email
 -----------------
-You need to configure your project to be able to send an emails. You should set `EMAIL_URL` as your env variable.
+You need to configure your project to be able to send email. You should set `EMAIL_URL` as your env variable.
 
-More details you will find on [dj-email-url package](https://github.com/migonzalvar/dj-email-url)
+You will find more information about this on [dj-email-url package](https://github.com/migonzalvar/dj-email-url).
 
 Check our article about how to achieve it:
 [Sending email in Divio Cloud applications](https://docs.divio.com/en/latest/reference/coding-sending-email.html)
 
-When you are using external SMTP it should looks like:
+When you are using external SMTP it should look like:
 ```submission://smtp_user:smtp_pass@smtp_host:port```
 
 Contribution
