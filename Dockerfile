@@ -1,8 +1,26 @@
-### Build static assets
-FROM node:10 as build-nodejs
+FROM aldryn/base-project:py3-3.25.1
+
+# <SOURCE>
+COPY . /app
+# </SOURCE>
+
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN apt-get -y update \
+  && apt-get install -y gettext \
+  # Cleanup apt cache
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV NODE_VERSION=10.15.1 \
+    NPM_VERSION=6.4.1
 
 ARG STATIC_URL
 ENV STATIC_URL ${STATIC_URL:-/static/}
+
+RUN sh /app/build/install.sh
+ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules \
+      PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 COPY webpack.config.js app.json package.json package-lock.json tsconfig.json tslint.json webpack.d.ts /app/
 WORKDIR /app
@@ -14,33 +32,14 @@ COPY ./templates /app/templates/
 RUN STATIC_URL=${STATIC_URL} npm run build-assets --production \
   && npm run build-emails --production
 
-### Final image
-# <DOCKER_FROM>
-FROM aldryn/base-project:py3-3.25.1
-# </DOCKER_FROM>
-
-# <SOURCE>
-COPY . /app
-# </SOURCE>
-
-RUN apt-get -y update \
-  && apt-get install -y gettext \
-  # Cleanup apt cache
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
 # Install Python dependencies
 RUN pip install pipenv
 COPY ./Pipfile ./Pipfile.lock /app/
 WORKDIR /app
 RUN pipenv install --system --deploy --dev
 
-ARG STATIC_URL
-ENV STATIC_URL ${STATIC_URL:-/static/}
-
-COPY --from=build-nodejs /app/saleor/static /app/static
-COPY --from=build-nodejs /app/webpack-bundle.json /app/webpack/
-COPY --from=build-nodejs /app/templates /app/templates
+RUN cp -a /app/saleor/static/. /app/static
+RUN cp -a /app/webpack-bundle.json /app/webpack/
 WORKDIR /app
 
 # Install Python dependencies
