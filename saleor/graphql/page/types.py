@@ -5,7 +5,6 @@ from graphene import relay
 
 from ...page import models
 from ..core.connection import CountableDjangoObjectType
-from ..translations.enums import LanguageCodeEnum
 from ..translations.resolvers import resolve_translation
 from ..translations.types import PageTranslation
 
@@ -18,9 +17,7 @@ class Page(CountableDjangoObjectType):
         deprecation_reason=(
             'isVisible is deprecated, use isPublished instead'))
     translation = graphene.Field(
-        PageTranslation,
-        language_code=graphene.Argument(
-            LanguageCodeEnum,
+        PageTranslation, language_code=graphene.String(
             description='A language code to return the translation for.',
             required=True),
         description=(

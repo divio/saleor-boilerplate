@@ -17,8 +17,6 @@ import CustomerCreateDetails from "../CustomerCreateDetails";
 import CustomerCreateNote from "../CustomerCreateNote/CustomerCreateNote";
 
 export interface CustomerCreatePageFormData extends AddressTypeInput {
-  customerFirstName: string;
-  customerLastName: string;
   email: string;
   note: string;
 }
@@ -32,8 +30,6 @@ const initialForm: CustomerCreatePageFormData = {
     value: ""
   },
   countryArea: "",
-  customerFirstName: "",
-  customerLastName: "",
   email: "",
   firstName: "",
   lastName: "",

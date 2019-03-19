@@ -18,7 +18,6 @@ import { TypedCustomerDetailsQuery } from "../queries";
 import { RemoveCustomer } from "../types/RemoveCustomer";
 import { UpdateCustomer } from "../types/UpdateCustomer";
 import {
-  customerAddressesUrl,
   customerListUrl,
   customerRemovePath,
   customerRemoveUrl,
@@ -105,9 +104,7 @@ export const CustomerDetailsView: React.StatelessComponent<
                                   updateCustomerOpts.data.customerUpdate.errors
                               )}
                               saveButtonBar={formTransitionState}
-                              onAddressManageClick={() =>
-                                navigate(customerAddressesUrl(id))
-                              }
+                              onAddressManageClick={() => undefined} // TODO: add address management #3173
                               onBack={() => navigate(customerListUrl)}
                               onRowClick={id => navigate(orderUrl(id))}
                               onSubmit={formData =>

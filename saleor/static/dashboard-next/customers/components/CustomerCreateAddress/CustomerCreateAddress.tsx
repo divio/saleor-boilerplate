@@ -8,7 +8,6 @@ import AddressEdit from "../../../components/AddressEdit/AddressEdit";
 import CardTitle from "../../../components/CardTitle";
 import { FormSpacer } from "../../../components/FormSpacer";
 import i18n from "../../../i18n";
-import { FormErrors } from "../../../types";
 import { AddressTypeInput } from "../../types";
 import { CustomerCreateData_shop_countries } from "../../types/CustomerCreateData";
 
@@ -22,7 +21,7 @@ export interface CustomerCreateAddressProps extends WithStyles<typeof styles> {
   countries: CustomerCreateData_shop_countries[];
   data: AddressTypeInput;
   disabled: boolean;
-  errors: FormErrors<keyof AddressTypeInput>;
+  errors: { [T in keyof AddressTypeInput]?: string };
   onChange(event: React.ChangeEvent<any>);
 }
 

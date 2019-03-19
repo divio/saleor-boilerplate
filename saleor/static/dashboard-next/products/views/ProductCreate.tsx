@@ -89,9 +89,7 @@ export const ProductUpdate: React.StatelessComponent<
                                           publicationDate:
                                             formData.publicationDate !== ""
                                               ? formData.publicationDate
-                                              : null,
-                                          sku: formData.sku,
-                                          stockQuantity: formData.stockQuantity
+                                              : null
                                         }
                                       });
                                     };
@@ -129,20 +127,25 @@ export const ProductUpdate: React.StatelessComponent<
                                             []
                                           ).map(edge => edge.node)}
                                           disabled={disabled}
-                                          errors={maybe(
-                                            () =>
-                                              productCreateData.productCreate
-                                                .errors,
-                                            []
-                                          )}
+                                          errors={
+                                            productCreateData &&
+                                            productCreateData.productCreate &&
+                                            productCreateData.productCreate
+                                              .errors
+                                              ? productCreateData.productCreate
+                                                  .errors
+                                              : []
+                                          }
                                           fetchCategories={searchCategory}
                                           fetchCollections={searchCollection}
                                           header={i18n.t("New Product")}
-                                          productTypes={maybe(() =>
-                                            data.productTypes.edges.map(
-                                              edge => edge.node
-                                            )
-                                          )}
+                                          productTypes={
+                                            data && data.productTypes
+                                              ? data.productTypes.edges.map(
+                                                  edge => edge.node
+                                                )
+                                              : undefined
+                                          }
                                           onAttributesEdit={
                                             handleAttributesEdit
                                           }

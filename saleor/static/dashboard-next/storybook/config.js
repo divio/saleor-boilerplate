@@ -53,8 +53,6 @@ function loadStories() {
   require("./stories/configuration/ConfigurationPage");
 
   // Customers
-  require("./stories/customers/CustomerAddressDialog");
-  require("./stories/customers/CustomerAddressListPage");
   require("./stories/customers/CustomerCreatePage");
   require("./stories/customers/CustomerDetailsPage");
   require("./stories/customers/CustomerListPage");

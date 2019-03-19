@@ -15,17 +15,18 @@ const styles = (theme: Theme) =>
       height: 48
     },
     hr: {
+      backgroundColor: "#eaeaea",
       border: "none",
-      borderTop: "1px solid #eaeaea",
-      height: 0,
+      height: 1,
       marginBottom: 0,
-      marginTop: 0,
-      width: "100%"
+      marginTop: 0
     },
     root: theme.mixins.gutters({
       alignItems: "center",
       display: "flex",
-      minHeight: theme.spacing.unit * 6
+      minHeight: theme.spacing.unit * 6,
+      paddingBottom: theme.spacing.unit * 2,
+      paddingTop: theme.spacing.unit * 2
     }),
     title: {
       flex: 1,

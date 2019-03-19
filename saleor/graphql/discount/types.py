@@ -9,7 +9,6 @@ from ..core.connection import CountableDjangoObjectType
 from ..core.fields import PrefetchingConnectionField
 from ..core.types import CountryDisplay
 from ..product.types import Category, Collection, Product
-from ..translations.enums import LanguageCodeEnum
 from ..translations.resolvers import resolve_translation
 from ..translations.types import VoucherTranslation
 
@@ -68,9 +67,7 @@ class Voucher(CountableDjangoObjectType):
         CountryDisplay,
         description='List of countries available for the shipping voucher.')
     translation = graphene.Field(
-        VoucherTranslation,
-        language_code=graphene.Argument(
-            LanguageCodeEnum,
+        VoucherTranslation, language_code=graphene.String(
             description='A language code to return the translation for.',
             required=True),
         description=(

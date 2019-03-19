@@ -3,7 +3,7 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://github.com/mirumee/saleor/zipball/master -O tmp.zip
+wget https://github.com/mirumee/saleor/zipball/2.4.0 -O tmp.zip
 
 echo "----- Unzip archive -----"
 mkdir tmp && unzip tmp.zip

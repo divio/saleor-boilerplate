@@ -11,8 +11,8 @@ from django_prices.models import MoneyField
 from django_prices.templatetags.prices_i18n import amount
 from prices import Money, fixed_discount, percentage_discount
 
-from ..core.utils.translations import TranslationProxy
 from . import DiscountValueType, VoucherType
+from ..core.utils.translations import TranslationProxy
 
 
 class NotApplicable(ValueError):

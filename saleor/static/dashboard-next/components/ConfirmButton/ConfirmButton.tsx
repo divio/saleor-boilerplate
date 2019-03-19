@@ -37,8 +37,6 @@ const styles = (theme: Theme) =>
       opacity: 0
     },
     label: {
-      alignItems: "center",
-      display: "flex",
       transitionDuration: theme.transitions.duration.standard + "ms"
     },
     progress: {
@@ -61,6 +59,7 @@ const styles = (theme: Theme) =>
 export interface ConfirmButtonProps
   extends Omit<ButtonProps, "classes">,
     WithStyles<typeof styles> {
+  children: string;
   transitionState: ConfirmButtonTransitionState;
 }
 

@@ -2,10 +2,6 @@ import gql from "graphql-tag";
 
 import { fragmentAddress } from "../orders/queries";
 import { TypedQuery } from "../queries";
-import {
-  CustomerAddresses,
-  CustomerAddressesVariables
-} from "./types/CustomerAddresses";
 import { CustomerCreateData } from "./types/CustomerCreateData";
 import {
   CustomerDetails,
@@ -37,23 +33,6 @@ export const customerDetailsFragment = gql`
     }
     note
     isActive
-  }
-`;
-
-export const customerAddressesFragment = gql`
-  ${customerFragment}
-  ${fragmentAddress}
-  fragment CustomerAddressesFragment on User {
-    ...CustomerFragment
-    addresses {
-      ...AddressFragment
-    }
-    defaultBillingAddress {
-      id
-    }
-    defaultShippingAddress {
-      id
-    }
   }
 `;
 
@@ -124,19 +103,6 @@ export const TypedCustomerDetailsQuery = TypedQuery<
   CustomerDetails,
   CustomerDetailsVariables
 >(customerDetails);
-
-const customerAddresses = gql`
-  ${customerAddressesFragment}
-  query CustomerAddresses($id: ID!) {
-    user(id: $id) {
-      ...CustomerAddressesFragment
-    }
-  }
-`;
-export const TypedCustomerAddressesQuery = TypedQuery<
-  CustomerAddresses,
-  CustomerAddressesVariables
->(customerAddresses);
 
 const customerCreateData = gql`
   query CustomerCreateData {

@@ -2,7 +2,7 @@
     "package-name": "saleor",
     "identifier": "saleor",
     "templates": [],
-    "version": "0.0.24",
+    "version": "2.4.0.1",
     "excluded": [
         "update_saleor.sh"
     ]

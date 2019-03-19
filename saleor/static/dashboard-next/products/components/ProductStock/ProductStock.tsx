@@ -53,13 +53,9 @@ const ProductStock = withStyles(styles, { name: "ProductStock" })(
             value={data.stockQuantity}
             type="number"
             onChange={onChange}
-            helperText={
-              product
-                ? i18n.t("Allocated: {{ quantity }}", {
-                    quantity: maybe(() => product.variants[0].quantityAllocated)
-                  })
-                : undefined
-            }
+            helperText={i18n.t("Allocated: {{ quantity }}", {
+              quantity: maybe(() => product.variants[0].quantityAllocated)
+            })}
           />
         </div>
       </CardContent>

@@ -11,6 +11,7 @@ from django.utils.encoding import smart_text
 from django.utils.translation import get_language, pgettext, pgettext_lazy
 from prices import TaxedMoneyRange
 
+from . import AddressType, logger
 from ..account.forms import get_address_form
 from ..account.models import Address, User
 from ..account.utils import store_user_address
@@ -24,7 +25,6 @@ from ..discount.utils import (
     get_value_voucher_discount, increase_voucher_usage)
 from ..order.models import Order
 from ..shipping.models import ShippingMethod
-from . import AddressType, logger
 from .forms import (
     AddressChoiceForm, AnonymousUserBillingForm, AnonymousUserShippingForm,
     BillingAddressChoiceForm)
@@ -881,8 +881,7 @@ def create_order(cart: Cart, tracking_code: str, discounts, taxes):
 
 
 def is_fully_paid(cart: Cart, taxes, discounts):
-    """Check if provided payment methods cover the checkout's total amount.
-    Note that these payments may not be captured or charged at all."""
+    """Check if checkout is fully paid."""
     payments = [
         payment for payment in cart.payments.all() if payment.is_active]
     total_paid = sum([p.total for p in payments])
@@ -903,12 +902,7 @@ def ready_to_place_order(cart: Cart, taxes, discounts):
             return False, pgettext_lazy(
                 'order placement error',
                 'Shipping method is not valid for your shipping address')
-    if not cart.billing_address:
-        return False, pgettext_lazy(
-            'order placement_error', 'Billing address is not set')
     if not is_fully_paid(cart, taxes, discounts):
         return False, pgettext_lazy(
-            'order placement error', (
-                'Provided payment methods can not '
-                'cover the checkout\'s total amount'))
+            'order placement error', 'Checkout is not fully paid')
     return True, None

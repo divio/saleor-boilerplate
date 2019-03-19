@@ -10,6 +10,7 @@ from django.template.response import TemplateResponse
 from django.utils.translation import npgettext_lazy, pgettext_lazy
 from django.views.decorators.http import require_POST
 
+from . import forms
 from ...core.utils import get_paginator_items
 from ...discount.models import Sale
 from ...product.models import (
@@ -19,7 +20,6 @@ from ...product.utils.availability import get_availability
 from ...product.utils.costs import (
     get_margin_for_variant, get_product_costs_data)
 from ..views import staff_member_required
-from . import forms
 from .filters import AttributeFilter, ProductFilter, ProductTypeFilter
 
 

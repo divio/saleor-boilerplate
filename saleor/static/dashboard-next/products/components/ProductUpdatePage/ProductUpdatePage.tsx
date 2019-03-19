@@ -1,4 +1,4 @@
-import { convertFromRaw, RawDraftContentState } from "draft-js";
+import { RawDraftContentState } from "draft-js";
 import * as React from "react";
 
 import AppHeader from "../../../components/AppHeader";
@@ -158,8 +158,8 @@ export const ProductUpdate: React.StatelessComponent<ProductUpdateProps> = ({
       }
     })),
     publicationDate: maybe(() => product.publicationDate),
-    seoDescription: maybe(() => product.seoDescription) || "",
-    seoTitle: maybe(() => product.seoTitle) || "",
+    seoDescription: maybe(() => product.seoDescription),
+    seoTitle: maybe(() => product.seoTitle),
     sku: maybe(() =>
       product.productType.hasVariants
         ? undefined
@@ -253,11 +253,7 @@ export const ProductUpdate: React.StatelessComponent<ProductUpdateProps> = ({
                   title={data.seoTitle}
                   titlePlaceholder={data.name}
                   description={data.seoDescription}
-                  descriptionPlaceholder={maybe(() =>
-                    convertFromRaw(data.description)
-                      .getPlainText()
-                      .slice(0, 300)
-                  )}
+                  descriptionPlaceholder={data.description}
                   loading={disabled}
                   onClick={onSeoClick}
                   onChange={change}

@@ -210,8 +210,6 @@ export const productCreateMutation = gql`
     $name: String!
     $price: Decimal
     $productType: ID!
-    $sku: String
-    $stockQuantity: Int
   ) {
     productCreate(
       input: {
@@ -225,8 +223,6 @@ export const productCreateMutation = gql`
         name: $name
         price: $price
         productType: $productType
-        sku: $sku
-        quantity: $stockQuantity
       }
     ) {
       errors {
