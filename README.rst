@@ -48,7 +48,7 @@ See `Saleor Official Documentation <https://docs.getsaleor.com/en/latest/>`_ for
 How to update Saleor to the newest version
 ==========================================
 
-1. Get the `latest Saleor release code <https://github.com/mirumee/saleor/archive/master.zip>`_ and unpack,
+1. Get the `latest Saleor release code <https://github.com/mirumee/saleor/releases>`_ and unpack,
 2. Copy and override Saleor project folder by saleor/saleor folder from your archive from step one,
 3. Override also all files under Saleor to root project folder such as requirements.txt, webpack.config.js etc.,
 4. Bump version in boilerplate.json and also add notes in CHANGELOG about your changes.
