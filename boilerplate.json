@@ -3,5 +3,7 @@
     "identifier": "saleor",
     "templates": [],
     "version": "0.0.24",
-    "excluded": []
+    "excluded": [
+        "update_saleor.sh"
+    ]
 }
