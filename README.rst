@@ -59,4 +59,6 @@ script that does the heavy lifting for you::
 Before applying, consult the `Saleor releases notes <https://github.com/mirumee/saleor/releases>`_ for changes 
 and update the changelog in this repository afterwards.
 
+Please mind that we do not override the ``settings.py`` file, you may need to do manual changes there.
+
 Lastly, set the correct version in ``boilerplate.json`` and relase to Divio Cloud.

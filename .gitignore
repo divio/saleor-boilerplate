@@ -7,3 +7,11 @@ __pycache__
 data/
 data.tar.gz
 .aldryn
+
+# from saleor
+.*
+**/*.pyc
+*.sqlite
+media
+node_modules
+static

@@ -3,22 +3,41 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://github.com/mirumee/saleor/zipball/2.4.0 -O tmp.zip
+wget https://api.github.com/repos/mirumee/saleor/zipball/2.4.0 -O saleor.zip
 
 echo "----- Unzip archive -----"
-mkdir tmp && unzip tmp.zip
-cp -R mirumee-saleor-*/* tmp
+unzip -q saleor.zip && mv mirumee-saleor-*/ tmp_saleor
 
-echo "----- Copy Saleor app -----"
-cp -R tmp/saleor .
+echo "----- Copy directories -----"
+\cp -Rf \
+    tmp_saleor/saleor \
+    tmp_saleor/locale \
+    tmp_saleor/templates \
+    .
 
-echo "----- Copy other needed files to root -----"
-cp -R apollo.config.js tslint.json tsconfig.json \
-   webpack.config.js webpack.d.ts app.json \
-   Pipfile Pipfile.lock Procfile package.json \
-   package-lock.json requirements.txt \
-   requirements_dev.txt locale templates .
+echo "----- Copy files -----"
+\cp -Rf \
+    tmp_saleor/.editorconfig \
+    tmp_saleor/.eslintrc.json \
+    tmp_saleor/.gqlconfig \
+    tmp_saleor/.npmrc \
+    tmp_saleor/.nvmrc \
+    tmp_saleor/.pylintrc \
+    tmp_saleor/apollo.config.js \
+    tmp_saleor/app.json \
+    tmp_saleor/package-lock.json \
+    tmp_saleor/package.json \
+    tmp_saleor/Pipfile \
+    tmp_saleor/Pipfile.lock \
+    tmp_saleor/requirements_dev.txt \
+    tmp_saleor/requirements.txt \
+    tmp_saleor/tsconfig.json \
+    tmp_saleor/tslint.json \
+    tmp_saleor/webpack.config.js \
+    tmp_saleor/webpack.d.ts \
+    .
 
-echo "----- Removing tmp files -----"
-rm -rf tmp.zip tmp mirumee-saleor-*
+echo "----- Cleaning up -----"
+rm -rf saleor.zip tmp_saleor
+
 echo "----- Done -----"
