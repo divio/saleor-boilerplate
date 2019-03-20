@@ -3,7 +3,7 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://api.github.com/repos/mirumee/saleor/zipball/2.4.0 -O saleor.zip
+wget https://api.github.com/repos/mirumee/saleor/zipball/2.3.1 -O saleor.zip
 
 echo "----- Unzip archive -----"
 unzip -q saleor.zip && mv mirumee-saleor-*/ tmp_saleor
@@ -20,8 +20,6 @@ echo "----- Copy files -----"
     tmp_saleor/.editorconfig \
     tmp_saleor/.eslintrc.json \
     tmp_saleor/.gqlconfig \
-    tmp_saleor/.npmrc \
-    tmp_saleor/.nvmrc \
     tmp_saleor/.pylintrc \
     tmp_saleor/apollo.config.js \
     tmp_saleor/app.json \
@@ -39,5 +37,6 @@ echo "----- Copy files -----"
 
 echo "----- Cleaning up -----"
 rm -rf saleor.zip tmp_saleor
+find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
 echo "----- Done -----"
