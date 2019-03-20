@@ -1,7 +1,5 @@
 FROM aldryn/base-project:py3-3.25.1
 
-RUN export PYTHONDONTWRITEBYTECODE=""
-
 # <SOURCE>
 COPY . /app
 # </SOURCE>

@@ -2,8 +2,12 @@
     "package-name": "saleor",
     "identifier": "saleor",
     "templates": [],
-    "version": "2.4.0.1",
+    "version": "2.4.0.5",
     "excluded": [
+        "LICENSE.txt",
+        ".DS_Store",
+        ".vscode",
+        "data/",
         "update_saleor.sh"
     ]
 }
