@@ -3,12 +3,15 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://api.github.com/repos/mirumee/saleor/zipball/2.3.1 -O saleor.zip
+wget https://api.github.com/repos/mirumee/saleor/zipball/2.4.0 -O saleor.zip
 
 echo "----- Unzip archive -----"
 unzip -q saleor.zip && mv mirumee-saleor-*/ tmp_saleor
 
 echo "----- Copy directories -----"
+rm -rf saleor/
+rm -rf locale/
+rm -rf templates/
 \cp -Rf \
     tmp_saleor/saleor \
     tmp_saleor/locale \
