@@ -6,7 +6,6 @@ COPY . /app
 
 RUN apt-get update && \
     apt-get -y install curl gnupg gettext && \
-    apt-get -y update && \
     # Cleanup apt cache
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
