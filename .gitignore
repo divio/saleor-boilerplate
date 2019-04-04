@@ -14,4 +14,3 @@ data.tar.gz
 *.sqlite
 media
 node_modules
-static

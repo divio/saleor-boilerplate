@@ -1,18 +1,24 @@
-FROM aldryn/base-project:py3-3.25.1
+# <WARNING>
+# Everything within sections like <TAG> is generated and can
+# be automatically replaced on deployment. You can disable
+# this functionality by simply removing the wrapping tags.
+# </WARNING>
+
+# <DOCKER_FROM>
+FROM divio/base:4.14-py3.6-slim-stretch
+# </DOCKER_FROM>
 
 # <SOURCE>
 COPY . /app
 # </SOURCE>
 
+ENV STATIC_URL ${STATIC_URL:-/static/}
+
 RUN apt-get update && \
-    apt-get -y install curl gnupg gettext && \
-    apt-get -y update && \
+    apt-get -y install gcc curl gnupg gettext && \
     # Cleanup apt cache
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-ARG STATIC_URL
-ENV STATIC_URL ${STATIC_URL:-/static/}
 
 # <NODE>
 ADD build /stack/boilerplate
