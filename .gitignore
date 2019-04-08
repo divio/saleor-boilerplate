@@ -9,7 +9,6 @@ data.tar.gz
 .aldryn
 
 # from saleor
-.*
 **/*.pyc
 *.sqlite
 media
