@@ -6,9 +6,10 @@ from django.conf import settings
 from django.core.files import File
 
 from ..checkout import AddressType
+from ..settings import PROJECT_ROOT
 
 AVATARS_PATH = os.path.join(
-    settings.PROJECT_ROOT, 'saleor', 'static', 'images', 'avatars')
+    PROJECT_ROOT, 'saleor', 'static', 'images', 'avatars')
 
 
 def store_user_address(user, address, address_type):
