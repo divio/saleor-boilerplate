@@ -4,7 +4,7 @@ Saleor Boilerplate
 
 `Divio Cloud <http://www.divio.com/>`_ based boilerplate to develop with Saleor.
 
-Up to date with `Saleor <https://getsaleor.com/>`_ **2.4.0**
+Up to date with `Saleor <https://getsaleor.com/>`_ **2.5.0**
 
 
 =============
