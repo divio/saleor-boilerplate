@@ -22,19 +22,3 @@ services:
       POSTGRES_DB: "db"
     volumes:
       - ".:/app:rw"
-
-  redis:
-    image: library/redis:5.0-alpine
-    volumes:
-      - saleor-redis:/data
-
-  # celery:
-  #   build: "."
-  #   command: celery -A saleor worker --app=saleor.celeryconf:app --loglevel=info
-  #   env_file: .env-local
-  #   depends_on:
-  #     - redis
-
-volumes:
-  saleor-redis:
-    driver: local
