@@ -224,7 +224,7 @@ def get_in_default_currency(defaults, field, currency):
 
 def create_products_by_schema(placeholder_dir, create_images):
     path = os.path.join(
-        settings.PROJECT_ROOT, 'saleor', 'static', 'populatedb_data.json')
+        settings.PROJECT_ROOT, 'app', 'saleor', 'static', 'populatedb_data.json')
     with open(path) as f:
         db_items = json.load(f, object_hook=object_hook)
     types = defaultdict(list)

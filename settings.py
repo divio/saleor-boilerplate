@@ -73,6 +73,8 @@ BASE_DIR = os.path.join(os.path.join(os.path.dirname(__file__), 'app'))
 
 # ROOT_URLCONF = 'saleor.urls'
 
+PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
+
 DEBUG = os.environ.get('DEBUG', False)
 
 INTERNAL_IPS = get_list(os.environ.get('INTERNAL_IPS', '127.0.0.1'))
@@ -336,7 +338,11 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('product_list', 'thumbnail__255x255'),
         ('product_list_2x', 'thumbnail__510x510')],
     'background_images': [
-        ('header_image', 'thumbnail__1080x440')]}
+        ('header_image', 'thumbnail__1080x440')],
+    'user_avatars': [
+        ('default', 'thumbnail__445x445'),
+    ],
+}
 
 VERSATILEIMAGEFIELD_SETTINGS = {
     # Images should be pre-generated on Production environment
