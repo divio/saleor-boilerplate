@@ -15,24 +15,25 @@ Configuration
 Login
 -----
 
-When you are using Saleor with Divio Cloud then you are able to use ``aldryn-sso`` 
-available under url: ``/<lang>/login/`` to sign in using your Divio Cloud credentials. 
+On Divio Cloud, login at ``/login/``. 
+
+Then go to the Saleor dashboard at ``/dashboard``.
+
+This will use our ``aldryn-sso`` single-sign-on system, using your Divio Cloud credentials. 
 The default Saleor form is still available to use.
 
-To set ``aldryn-sso`` login form as default, change ``LOGIN_URL`` in your settings to ``'aldryn_sso_login'``.
-
-You can disable this functionality by removing ``aldryn-sso`` from ``INSTALLED_ADDONS`` in ``settings.py``.
+To set the ``aldryn-sso`` login form as the default, change ``LOGIN_URL`` in your settings to ``'aldryn_sso_login'``. 
+You can disable this functionality by removing ``aldryn-sso`` from ``INSTALLED_ADDONS`` in ``settings.py``. See 
+`Aldryn SSO <http://docs.divio.com/en/latest/reference/addons-aldryn-sso.html>`_ for more information.
 
 
 Email
 -----
 
-You need to configure your project to be able to send email. You should set `EMAIL_URL` as your env variable.
+You need to configure your project to be able to send email. You should set `EMAIL_URL` as your env variable; see 
+`Sending email in Divio Cloud applications <https://docs.divio.com/en/latest/reference/coding-sending-email.html>`_.
 
-You will find more information about this on `dj-email-url package <https://github.com/migonzalvar/dj-email-url>`_.
-
-Check our article about how to achieve it:
-`Sending email in Divio Cloud applications <https://docs.divio.com/en/latest/reference/coding-sending-email.html>`_
+This uses the `dj-email-url package <https://github.com/migonzalvar/dj-email-url>`_.
 
 When you are using external SMTP it should look like:
 ``submission://smtp_user:smtp_pass@smtp_host:port``
@@ -59,6 +60,6 @@ script that does the heavy lifting for you::
 Before applying, consult the `Saleor releases notes <https://github.com/mirumee/saleor/releases>`_ for changes 
 and update the changelog in this repository afterwards.
 
-Please mind that we do not override the ``settings.py`` file, you may need to do manual changes there.
+Please note that we do not override the ``settings.py`` file, you may need to do manual changes there.
 
 Lastly, set the correct version in ``boilerplate.json`` and relase to Divio Cloud.
