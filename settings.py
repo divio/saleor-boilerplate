@@ -44,7 +44,8 @@ DEBUG = get_bool_from_env("DEBUG", True)
 
 SITE_ID = 1
 
-PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
+# We need to use the Docker app directory here instead for Divio Cloud
+PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "../app"))
 
 ROOT_URLCONF = "saleor.urls"
 
@@ -208,7 +209,7 @@ TEMPLATES = [
 ]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -235,14 +236,15 @@ INSTALLED_APPS.extend([
     # External apps that need to go before django's
     "storages",
     # Django modules
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.sitemaps",
-    "django.contrib.sites",
-    "django.contrib.staticfiles",
-    "django.contrib.auth",
-    "django.contrib.postgres",
+    # provided via Divo Cloud (aldryn-django)
+    # "django.contrib.contenttypes",
+    # "django.contrib.sessions",
+    # "django.contrib.messages",
+    # "django.contrib.sitemaps",
+    # "django.contrib.sites",
+    # "django.contrib.staticfiles",
+    # "django.contrib.auth",
+    # "django.contrib.postgres",
     "django.forms",
     # Local apps
     "saleor.account",
