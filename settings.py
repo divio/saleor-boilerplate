@@ -45,7 +45,7 @@ DEBUG = get_bool_from_env("DEBUG", True)
 SITE_ID = 1
 
 # We need to use the Docker app directory here instead for Divio Cloud
-PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "../app"))
+PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "app"))
 
 ROOT_URLCONF = "saleor.urls"
 
@@ -472,7 +472,7 @@ WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not DEBUG,
         "BUNDLE_DIR_NAME": "assets/",
-        # custom setting for Divio Cloud
+        # custom adaptions for Divio Cloud
         "STATS_FILE": os.path.join(PROJECT_ROOT, "webpack", "webpack-bundle.json"),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update\.js", r".+\.map"],
