@@ -47,7 +47,8 @@ SITE_ID = 1
 # We need to use the Docker app directory here instead for Divio Cloud
 PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "app"))
 
-ROOT_URLCONF = "saleor.urls"
+# Divio Cloud loads `urls.py`
+# ROOT_URLCONF = "saleor.urls"
 
 WSGI_APPLICATION = "saleor.wsgi.application"
 
@@ -91,7 +92,7 @@ LANGUAGES = [
     ("fr", _("French")),
     ("hi", _("Hindi")),
     ("hu", _("Hungarian")),
-    ("hy", _("Armenian")),
+    # ("hy", _("Armenian")),
     ("id", _("Indonesian")),
     ("it", _("Italian")),
     ("ja", _("Japanese")),
@@ -156,14 +157,13 @@ MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATIC_URL = os.environ.get("STATIC_URL", "/static/")
+# adapted for Divio Cloud
 STATICFILES_DIRS = [
-    ("assets", os.path.join(PROJECT_ROOT, "saleor", "static", "assets")),
-    ("favicons", os.path.join(PROJECT_ROOT, "saleor", "static", "favicons")),
-    ("images", os.path.join(PROJECT_ROOT, "saleor", "static", "images")),
-    (
-        "dashboard/images",
-        os.path.join(PROJECT_ROOT, "saleor", "static", "dashboard", "images"),
-    ),
+    ('assets', os.path.join(STATIC_ROOT, 'assets')),
+    ('favicons', os.path.join(STATIC_ROOT, 'favicons')),
+    ('images', os.path.join(STATIC_ROOT, 'images')),
+    ('dashboard', os.path.join(STATIC_ROOT, 'dashboard')),
+    ('dashboard/images', os.path.join(STATIC_ROOT, 'dashboard', 'images'))
 ]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",

@@ -43,4 +43,6 @@ rm -rf templates/templated_email/compiled/.gitkeep
 rm -rf saleor.zip tmp_saleor
 find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
+echo "Manually implement the `saleor/settings.py` changes to `settings.py`"
+echo "Manually implement the `saleor/urls.py` changes to `urls.py`"
 echo "----- Done -----"
