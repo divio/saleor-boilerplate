@@ -3,7 +3,7 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://api.github.com/repos/mirumee/saleor/zipball/2.5.0 -O saleor.zip
+wget https://api.github.com/repos/mirumee/saleor/zipball/2.6.0 -O saleor.zip
 
 echo "----- Unzip archive -----"
 unzip -q saleor.zip && mv mirumee-saleor-*/ tmp_saleor
@@ -39,7 +39,10 @@ echo "----- Copy files -----"
     .
 
 echo "----- Cleaning up -----"
+rm -rf templates/templated_email/compiled/.gitkeep
 rm -rf saleor.zip tmp_saleor
 find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
+echo "Manually implement the `saleor/settings.py` changes to `settings.py`"
+echo "Manually implement the `saleor/urls.py` changes to `urls.py`"
 echo "----- Done -----"
