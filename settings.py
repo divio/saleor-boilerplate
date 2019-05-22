@@ -413,7 +413,8 @@ bootstrap4 = {
 
 TEST_RUNNER = "tests.runner.PytestTestRunner"
 
-ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
+# 0.0.0.0 needs to be added for local development using the Divio App
+ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0"))
 ALLOWED_GRAPHQL_ORIGINS = os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -471,7 +472,8 @@ WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not DEBUG,
         "BUNDLE_DIR_NAME": "assets/",
-        "STATS_FILE": os.path.join(PROJECT_ROOT, "webpack-bundle.json"),
+        # custom setting for Divio Cloud
+        "STATS_FILE": os.path.join(PROJECT_ROOT, "webpack", "webpack-bundle.json"),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update\.js", r".+\.map"],
     }
