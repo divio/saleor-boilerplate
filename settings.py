@@ -22,7 +22,8 @@ from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from django_prices.templatetags.prices_i18n import get_currency_fraction
 
-from . import __version__
+# custom from Divio Cloud, need to import the version from `saleor.__init__.py`
+from saleor import __version__
 
 
 def get_list(text):
@@ -66,7 +67,6 @@ CACHES = {"default": django_cache_url.config()}
 DATABASES = {
     "default": dj_database_url.config(
         default="postgres://postgres:postgres@localhost:5432/db",
-        conn_max_age=600
     )
 }
 
@@ -280,6 +280,7 @@ INSTALLED_APPS.extend([
     "phonenumber_field",
     "captcha",
 ])
+
 
 ENABLE_DEBUG_TOOLBAR = get_bool_from_env("ENABLE_DEBUG_TOOLBAR", False)
 if ENABLE_DEBUG_TOOLBAR:
