@@ -4,7 +4,7 @@ Saleor Boilerplate
 
 `Divio Cloud <http://www.divio.com/>`_ based boilerplate to develop with Saleor.
 
-Up to date with `Saleor <https://getsaleor.com/>`_ **2.5.0**
+Up to date with `Saleor <https://getsaleor.com/>`_ **2.6.0**
 
 
 =============
@@ -15,22 +15,22 @@ Configuration
 Login
 -----
 
-On Divio Cloud, login at ``/login/``. 
+On Divio Cloud, login at ``/login/``.
 
 Then go to the Saleor dashboard at ``/dashboard``.
 
-This will use our ``aldryn-sso`` single-sign-on system, using your Divio Cloud credentials. 
+This will use our ``aldryn-sso`` single-sign-on system, using your Divio Cloud credentials.
 The default Saleor form is still available to use.
 
-To set the ``aldryn-sso`` login form as the default, change ``LOGIN_URL`` in your settings to ``'aldryn_sso_login'``. 
-You can disable this functionality by removing ``aldryn-sso`` from ``INSTALLED_ADDONS`` in ``settings.py``. See 
+To set the ``aldryn-sso`` login form as the default, change ``LOGIN_URL`` in your settings to ``'aldryn_sso_login'``.
+You can disable this functionality by removing ``aldryn-sso`` from ``INSTALLED_ADDONS`` in ``settings.py``. See
 `Aldryn SSO <http://docs.divio.com/en/latest/reference/addons-aldryn-sso.html>`_ for more information.
 
 
 Email
 -----
 
-You need to configure your project to be able to send email. You should set `EMAIL_URL` as your env variable; see 
+You need to configure your project to be able to send email. You should set `EMAIL_URL` as your env variable; see
 `Sending email in Divio Cloud applications <https://docs.divio.com/en/latest/reference/coding-sending-email.html>`_.
 
 This uses the `dj-email-url package <https://github.com/migonzalvar/dj-email-url>`_.
@@ -57,7 +57,7 @@ script that does the heavy lifting for you::
 
     bash ./update_saleor.sh
 
-Before applying, consult the `Saleor releases notes <https://github.com/mirumee/saleor/releases>`_ for changes 
+Before applying, consult the `Saleor releases notes <https://github.com/mirumee/saleor/releases>`_ for changes
 and update the changelog in this repository afterwards.
 
 Please note that we do not override the ``settings.py`` file, you may need to do manual changes there.
