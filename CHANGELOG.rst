@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-2.7.0 (unreleased)
+2.7.0 (2019-06-17)
 ==================
 
 * Updated Saleor to 2.7.0 version
