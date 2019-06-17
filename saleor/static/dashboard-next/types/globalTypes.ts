@@ -42,6 +42,7 @@ export enum LanguageCodeEnum {
   DE = "DE",
   EN = "EN",
   ES = "ES",
+  ES_CO = "ES_CO",
   ET = "ET",
   FA = "FA",
   FR = "FR",
@@ -52,6 +53,7 @@ export enum LanguageCodeEnum {
   IT = "IT",
   JA = "JA",
   KO = "KO",
+  LT = "LT",
   MN = "MN",
   NB = "NB",
   NL = "NL",
@@ -61,6 +63,7 @@ export enum LanguageCodeEnum {
   RO = "RO",
   RU = "RU",
   SK = "SK",
+  SQ = "SQ",
   SR = "SR",
   SV = "SV",
   SW = "SW",
@@ -241,6 +244,11 @@ export interface AttributeCreateInput {
   values?: (AttributeValueCreateInput | null)[] | null;
 }
 
+export interface AttributeInput {
+  slug: string;
+  value: string;
+}
+
 export interface AttributeUpdateInput {
   name?: string | null;
   removeValues?: (string | null)[] | null;
@@ -313,6 +321,11 @@ export interface CustomerInput {
   note?: string | null;
 }
 
+export interface DateRangeInput {
+  gte?: any | null;
+  lte?: any | null;
+}
+
 export interface DraftOrderInput {
   billingAddress?: AddressInput | null;
   user?: string | null;
@@ -343,12 +356,48 @@ export interface FulfillmentUpdateTrackingInput {
   notifyCustomer?: boolean | null;
 }
 
+export interface MenuCreateInput {
+  name?: string | null;
+  items?: (MenuItemInput | null)[] | null;
+}
+
+export interface MenuItemCreateInput {
+  name?: string | null;
+  url?: string | null;
+  category?: string | null;
+  collection?: string | null;
+  page?: string | null;
+  menu: string;
+  parent?: string | null;
+}
+
+export interface MenuItemInput {
+  name?: string | null;
+  url?: string | null;
+  category?: string | null;
+  collection?: string | null;
+  page?: string | null;
+}
+
+export interface MenuItemMoveInput {
+  itemId: string;
+  parentId?: string | null;
+  sortOrder?: number | null;
+}
+
 export interface NameTranslationInput {
   name?: string | null;
 }
 
 export interface OrderAddNoteInput {
   message?: string | null;
+}
+
+export interface OrderFilterInput {
+  paymentStatus?: (PaymentChargeStatusEnum | null)[] | null;
+  status?: (OrderStatusFilter | null)[] | null;
+  customer?: string | null;
+  created?: DateRangeInput | null;
 }
 
 export interface OrderLineCreateInput {
@@ -386,6 +435,22 @@ export interface PageTranslationInput {
   title?: string | null;
   content?: string | null;
   contentJson?: any | null;
+}
+
+export interface PriceRangeInput {
+  gte?: number | null;
+  lte?: number | null;
+}
+
+export interface ProductFilterInput {
+  isPublished?: boolean | null;
+  collections?: (string | null)[] | null;
+  categories?: (string | null)[] | null;
+  price?: PriceRangeInput | null;
+  attributes?: (AttributeInput | null)[] | null;
+  stockAvailability?: StockAvailability | null;
+  productType?: string | null;
+  search?: string | null;
 }
 
 export interface ProductTypeInput {

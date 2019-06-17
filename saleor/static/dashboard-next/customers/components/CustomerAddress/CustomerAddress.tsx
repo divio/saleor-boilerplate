@@ -6,10 +6,10 @@ import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
-import AddressFormatter from "../../../components/AddressFormatter";
-import CardMenu from "../../../components/CardMenu";
-import CardTitle from "../../../components/CardTitle";
-import Skeleton from "../../../components/Skeleton";
+import AddressFormatter from "@saleor/components/AddressFormatter";
+import CardMenu from "@saleor/components/CardMenu";
+import CardTitle from "@saleor/components/CardTitle";
+import Skeleton from "@saleor/components/Skeleton";
 import i18n from "../../../i18n";
 import { AddressTypeEnum } from "../../../types/globalTypes";
 import { CustomerAddresses_user_addresses } from "../../types/CustomerAddresses";
@@ -100,20 +100,10 @@ const CustomerAddress = withStyles(styles, { name: "CustomerAddress" })(
       </CardContent>
       <div className={classes.actionsContainer}>
         <CardActions className={classes.actions}>
-          <Button
-            color="primary"
-            disabled={disabled}
-            variant="flat"
-            onClick={onEdit}
-          >
+          <Button color="primary" disabled={disabled} onClick={onEdit}>
             {i18n.t("Edit")}
           </Button>
-          <Button
-            color="primary"
-            disabled={disabled}
-            variant="flat"
-            onClick={onRemove}
-          >
+          <Button color="primary" disabled={disabled} onClick={onRemove}>
             {i18n.t("Delete")}
           </Button>
         </CardActions>

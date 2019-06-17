@@ -17,8 +17,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import classNames from "classnames";
 import * as React from "react";
 
-import CardTitle from "../../components/CardTitle";
-import Skeleton from "../../components/Skeleton";
+import CardTitle from "@saleor/components/CardTitle";
+import Skeleton from "@saleor/components/Skeleton";
 import i18n from "../../i18n";
 import { maybe, renderCollection } from "../../misc";
 import { CountryFragment } from "../../taxes/types/CountryFragment";
@@ -98,7 +98,7 @@ const CountryList = withStyles(styles, {
         <CardTitle
           title={title}
           toolbar={
-            <Button variant="flat" color="primary" onClick={onCountryAssign}>
+            <Button color="primary" onClick={onCountryAssign}>
               {i18n.t("Assign countries")}
             </Button>
           }

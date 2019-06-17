@@ -1,9 +1,9 @@
 import { stringify as stringifyQs } from "qs";
 import * as React from "react";
 
-import useNavigator from "../../hooks/useNavigator";
-import useNotifier from "../../hooks/useNotifier";
-import useShop from "../../hooks/useShop";
+import useNavigator from "@saleor/hooks/useNavigator";
+import useNotifier from "@saleor/hooks/useNotifier";
+import useShop from "@saleor/hooks/useShop";
 import i18n from "../../i18n";
 import { getMutationState, maybe } from "../../misc";
 import {
@@ -56,6 +56,9 @@ const TranslationsVouchers: React.FC<TranslationsVouchersProps> = ({
       navigate("?", true);
     }
   };
+  const onDiscard = () => {
+    navigate("?", true);
+  };
 
   return (
     <TypedVoucherTranslationDetails variables={{ id, language: languageCode }}>
@@ -103,6 +106,7 @@ const TranslationsVouchers: React.FC<TranslationsVouchersProps> = ({
                   )
                 }
                 onEdit={onEdit}
+                onDiscard={onDiscard}
                 onLanguageChange={lang =>
                   navigate(
                     languageEntityUrl(lang, TranslatableEntities.vouchers, id)

@@ -1,10 +1,11 @@
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+// FIXME: https://github.com/mirumee/saleor/issues/4174
+import OldMuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import MuiThemeProvider from "@material-ui/styles/ThemeProvider";
 import * as React from "react";
 
 import Baseline from "../../Baseline";
 import createTheme, { IThemeColors } from "../../theme";
 
-// TODO: fix secondary buttons
 const dark: IThemeColors = {
   autofill: "#5D5881",
   background: {
@@ -19,6 +20,11 @@ const dark: IThemeColors = {
   gray: {
     default: "#202124",
     disabled: "rgba(32, 33, 36, 0.6)"
+  },
+  input: {
+    default: "#25262A",
+    disabled: "#292A2D",
+    focused: "#25262A"
   },
   paperBorder: "#252728",
   primary: "#13BEBB",
@@ -38,6 +44,11 @@ const light: IThemeColors = {
   gray: {
     default: "#C8C8C8",
     disabled: "rgba(216, 216, 216, 0.3)"
+  },
+  input: {
+    default: "#F1F6F6",
+    disabled: "#EAEAEA",
+    focused: "#DCEBEB"
   },
   paperBorder: "#EAEAEA",
   primary: "#13BEBB",
@@ -73,10 +84,12 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
         toggleTheme
       }}
     >
-      <MuiThemeProvider theme={createTheme(isDark ? dark : light)}>
-        <Baseline />
-        {children}
-      </MuiThemeProvider>
+      <OldMuiThemeProvider theme={createTheme(isDark ? dark : light)}>
+        <MuiThemeProvider theme={createTheme(isDark ? dark : light)}>
+          <Baseline />
+          {children}
+        </MuiThemeProvider>
+      </OldMuiThemeProvider>
     </ThemeContext.Provider>
   );
 };

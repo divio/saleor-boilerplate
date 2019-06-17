@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 
-import useShop from "../../hooks/useShop";
+import useShop from "@saleor/hooks/useShop";
 
 interface WindowTitleProps {
   title: string;
@@ -13,8 +13,6 @@ export const WindowTitle: React.StatelessComponent<WindowTitleProps> = ({
   const shop = useShop();
 
   return shop === undefined || !title ? null : (
-    <Helmet>
-      <title>{`${title} | ${shop.name}`}</title>
-    </Helmet>
+    <Helmet title={`${title} | ${shop.name}`} />
   );
 };

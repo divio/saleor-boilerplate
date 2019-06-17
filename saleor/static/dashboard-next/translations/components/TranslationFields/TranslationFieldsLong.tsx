@@ -2,8 +2,8 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
-import { ConfirmButtonTransitionState } from "../../../components/ConfirmButton";
-import Form from "../../../components/Form";
+import { ConfirmButtonTransitionState } from "@saleor/components/ConfirmButton";
+import Form from "@saleor/components/Form";
 import i18n from "../../../i18n";
 import TranslationFieldsSave from "./TranslationFieldsSave";
 
@@ -12,6 +12,7 @@ interface TranslationFieldsLongProps {
   edit: boolean;
   initial: string;
   saveButtonState: ConfirmButtonTransitionState;
+  onDiscard: () => void;
   onSubmit: (data: string) => void;
 }
 
@@ -20,6 +21,7 @@ const TranslationFieldsLong: React.FC<TranslationFieldsLongProps> = ({
   edit,
   initial,
   saveButtonState,
+  onDiscard,
   onSubmit
 }) =>
   edit ? (
@@ -27,20 +29,20 @@ const TranslationFieldsLong: React.FC<TranslationFieldsLongProps> = ({
       initial={{ translation: initial }}
       onSubmit={data => onSubmit(data.translation)}
     >
-      {({ change, data, reset, submit }) => (
+      {({ change, data, submit }) => (
         <div>
           <TextField
             disabled={disabled}
             fullWidth
             multiline
-            // label={i18n.t("Translation")}
+            label={i18n.t("Translation")}
             name="translation"
             value={data.translation}
             onChange={change}
           />
           <TranslationFieldsSave
             saveButtonState={saveButtonState}
-            onDiscard={reset}
+            onDiscard={onDiscard}
             onSave={submit}
           />
         </div>

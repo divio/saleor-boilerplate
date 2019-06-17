@@ -9,12 +9,13 @@ import {
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
-import CardSpacer from "../../../components/CardSpacer";
-import CardTitle from "../../../components/CardTitle";
-import { FormSpacer } from "../../../components/FormSpacer";
-import MultiAutocompleteSelectField from "../../../components/MultiAutocompleteSelectField";
-import SingleAutocompleteSelectField from "../../../components/SingleAutocompleteSelectField";
-import Skeleton from "../../../components/Skeleton";
+import CardSpacer from "@saleor/components/CardSpacer";
+import CardTitle from "@saleor/components/CardTitle";
+import Chip from "@saleor/components/Chip";
+import { FormSpacer } from "@saleor/components/FormSpacer";
+import MultiAutocompleteSelectField from "@saleor/components/MultiAutocompleteSelectField";
+import SingleAutocompleteSelectField from "@saleor/components/SingleAutocompleteSelectField";
+import Skeleton from "@saleor/components/Skeleton";
 import i18n from "../../../i18n";
 import { maybe } from "../../../misc";
 import { ProductCreateData_productTypes_edges_node_productAttributes } from "../../types/ProductCreateData";
@@ -214,7 +215,6 @@ const ProductOrganization = withStyles(styles, { name: "ProductOrganization" })(
               }
               value={data.productType}
               onChange={handleProductTypeSelect}
-
             />
           ) : (
             <>
@@ -294,7 +294,22 @@ const ProductOrganization = withStyles(styles, { name: "ProductOrganization" })(
             value={data.collections}
             onChange={onChange}
             fetchChoices={fetchCollections}
-          />
+          >
+            {({ deleteItem, items }) => (
+              <>
+                <FormSpacer />
+                <div>
+                  {items.map(item => (
+                    <Chip
+                      key={item.value}
+                      label={item.label}
+                      onClose={() => deleteItem(item)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </MultiAutocompleteSelectField>
         </CardContent>
       </Card>
     );

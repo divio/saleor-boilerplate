@@ -195,22 +195,22 @@ TEMPLATES = [
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 MIDDLEWARE = [
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-    "django_babel.middleware.LocaleMiddleware",
+    "saleor.core.middleware.django_session_middleware",
+    "saleor.core.middleware.django_security_middleware",
+    "saleor.core.middleware.django_csrf_view_middleware",
+    "saleor.core.middleware.django_auth_middleware",
+    "saleor.core.middleware.django_messages_middleware",
+    "saleor.core.middleware.django_locale_middleware",
+    "saleor.core.middleware.babel_locale_middleware",
     "saleor.core.middleware.discounts",
     "saleor.core.middleware.google_analytics",
     "saleor.core.middleware.country",
     "saleor.core.middleware.currency",
     "saleor.core.middleware.site",
     "saleor.core.middleware.taxes",
-    "social_django.middleware.SocialAuthExceptionMiddleware",
-    "impersonate.middleware.ImpersonateMiddleware",
+    "saleor.core.middleware.social_auth_exception_middleware",
+    "saleor.core.middleware.impersonate_middleware",
     "saleor.graphql.middleware.jwt_middleware",
 ]
 
@@ -230,6 +230,7 @@ INSTALLED_APPS = [
     # Local apps
     "saleor.account",
     "saleor.discount",
+    "saleor.giftcard",
     "saleor.product",
     "saleor.checkout",
     "saleor.core",
@@ -258,7 +259,6 @@ INSTALLED_APPS = [
     "social_django",
     "django_countries",
     "django_filters",
-    "django_celery_results",
     "impersonate",
     "phonenumber_field",
     "captcha",
@@ -411,11 +411,27 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_DEFAULT_ACL = os.environ.get("AWS_DEFAULT_ACL", None)
 
+# Google Cloud Storage configuration
+GS_PROJECT_ID = os.environ.get("GS_PROJECT_ID")
+GS_STORAGE_BUCKET_NAME = os.environ.get("GS_STORAGE_BUCKET_NAME")
+GS_MEDIA_BUCKET_NAME = os.environ.get("GS_MEDIA_BUCKET_NAME")
+GS_AUTO_CREATE_BUCKET = get_bool_from_env("GS_AUTO_CREATE_BUCKET", False)
+
+# If GOOGLE_APPLICATION_CREDENTIALS is set there is no need to load OAuth token
+# See https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
+if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+    GS_CREDENTIALS = os.environ.get("GS_CREDENTIALS")
+
 if AWS_STORAGE_BUCKET_NAME:
     STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+elif GS_STORAGE_BUCKET_NAME:
+    STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 
 if AWS_MEDIA_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = "saleor.core.storages.S3MediaStorage"
+    THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+elif GS_MEDIA_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE = "saleor.core.storages.GCSMediaStorage"
     THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
@@ -514,7 +530,7 @@ CELERY_TASK_ALWAYS_EAGER = not CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", None)
 
 # Impersonate module settings
 IMPERSONATE = {
@@ -579,42 +595,61 @@ CHECKOUT_PAYMENT_GATEWAYS = {
 }
 
 PAYMENT_GATEWAYS = {
-    DUMMY: {"module": "saleor.payment.gateways.dummy", "connection_params": {}},
+    DUMMY: {
+        "module": "saleor.payment.gateways.dummy",
+        "config": {
+            "auto_capture": True,
+            "connection_params": {},
+            "template_path": "order/payment/dummy.html",
+        },
+    },
     BRAINTREE: {
         "module": "saleor.payment.gateways.braintree",
-        "connection_params": {
-            "sandbox_mode": get_bool_from_env("BRAINTREE_SANDBOX_MODE", True),
-            "merchant_id": os.environ.get("BRAINTREE_MERCHANT_ID"),
-            "public_key": os.environ.get("BRAINTREE_PUBLIC_KEY"),
-            "private_key": os.environ.get("BRAINTREE_PRIVATE_KEY"),
+        "config": {
+            "auto_capture": True,
+            "template_path": "order/payment/braintree.html",
+            "connection_params": {
+                "sandbox_mode": get_bool_from_env("BRAINTREE_SANDBOX_MODE", True),
+                "merchant_id": os.environ.get("BRAINTREE_MERCHANT_ID"),
+                "public_key": os.environ.get("BRAINTREE_PUBLIC_KEY"),
+                "private_key": os.environ.get("BRAINTREE_PRIVATE_KEY"),
+            },
         },
     },
     RAZORPAY: {
         "module": "saleor.payment.gateways.razorpay",
-        "connection_params": {
-            "public_key": os.environ.get("RAZORPAY_PUBLIC_KEY"),
-            "secret_key": os.environ.get("RAZORPAY_SECRET_KEY"),
-            "prefill": get_bool_from_env("RAZORPAY_PREFILL", True),
-            "store_name": os.environ.get("RAZORPAY_STORE_NAME"),
-            "store_image": os.environ.get("RAZORPAY_STORE_IMAGE"),
+        "config": {
+            "auto_capture": None,
+            "template_path": "order/payment/razorpay.html",
+            "connection_params": {
+                "public_key": os.environ.get("RAZORPAY_PUBLIC_KEY"),
+                "secret_key": os.environ.get("RAZORPAY_SECRET_KEY"),
+                "prefill": get_bool_from_env("RAZORPAY_PREFILL", True),
+                "store_name": os.environ.get("RAZORPAY_STORE_NAME"),
+                "store_image": os.environ.get("RAZORPAY_STORE_IMAGE"),
+            },
         },
     },
     STRIPE: {
         "module": "saleor.payment.gateways.stripe",
-        "connection_params": {
-            "public_key": os.environ.get("STRIPE_PUBLIC_KEY"),
-            "secret_key": os.environ.get("STRIPE_SECRET_KEY"),
-            "store_name": os.environ.get("STRIPE_STORE_NAME", "Saleor"),
-            "store_image": os.environ.get("STRIPE_STORE_IMAGE", None),
-            "prefill": get_bool_from_env("STRIPE_PREFILL", True),
-            "remember_me": os.environ.get("STRIPE_REMEMBER_ME", True),
-            "locale": os.environ.get("STRIPE_LOCALE", "auto"),
-            "enable_billing_address": os.environ.get(
-                "STRIPE_ENABLE_BILLING_ADDRESS", False
-            ),
-            "enable_shipping_address": os.environ.get(
-                "STRIPE_ENABLE_SHIPPING_ADDRESS", False
-            ),
+        "config": {
+            "auto_capture": True,
+            "template_path": "order/payment/stripe.html",
+            "connection_params": {
+                "public_key": os.environ.get("STRIPE_PUBLIC_KEY"),
+                "secret_key": os.environ.get("STRIPE_SECRET_KEY"),
+                "store_name": os.environ.get("STRIPE_STORE_NAME", "Saleor"),
+                "store_image": os.environ.get("STRIPE_STORE_IMAGE", None),
+                "prefill": get_bool_from_env("STRIPE_PREFILL", True),
+                "remember_me": os.environ.get("STRIPE_REMEMBER_ME", True),
+                "locale": os.environ.get("STRIPE_LOCALE", "auto"),
+                "enable_billing_address": os.environ.get(
+                    "STRIPE_ENABLE_BILLING_ADDRESS", False
+                ),
+                "enable_shipping_address": os.environ.get(
+                    "STRIPE_ENABLE_SHIPPING_ADDRESS", False
+                ),
+            },
         },
     },
 }

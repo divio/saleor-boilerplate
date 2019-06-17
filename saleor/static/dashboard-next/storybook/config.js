@@ -6,13 +6,18 @@ function loadStories() {
   require("./stories/components/ActionDialog");
   require("./stories/components/AddressEdit");
   require("./stories/components/AddressFormatter");
+  require("./stories/components/AutocompleteSelectMenu");
   require("./stories/components/CardMenu");
+  require("./stories/components/Checkbox");
+  require("./stories/components/Chip");
   require("./stories/components/Date");
   require("./stories/components/DateTime");
+  require("./stories/components/DeleteFilterTabDialog");
   require("./stories/components/EditableTableCell");
   require("./stories/components/ErrorMessageCard");
   require("./stories/components/ErrorPage");
   require("./stories/components/ExternalLink");
+  require("./stories/components/Filter");
   require("./stories/components/Money");
   require("./stories/components/MoneyRange");
   require("./stories/components/MultiAutocompleteSelectField");
@@ -24,6 +29,7 @@ function loadStories() {
   require("./stories/components/PriceField");
   require("./stories/components/RichTextEditor");
   require("./stories/components/SaveButtonBar");
+  require("./stories/components/SaveFilterTabDialog");
   require("./stories/components/SingleAutocompleteSelectField");
   require("./stories/components/SingleSelectField");
   require("./stories/components/Skeleton");
@@ -70,6 +76,12 @@ function loadStories() {
 
   // Homepage
   require("./stories/home/HomePage");
+
+  // Navigation
+  require("./stories/navigation/MenuCreateDialog");
+  require("./stories/navigation/MenuDetailsPage");
+  require("./stories/navigation/MenuItemDialog");
+  require("./stories/navigation/MenuListPage");
 
   // Staff
   require("./stories/staff/StaffListPage");
