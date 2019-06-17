@@ -40,10 +40,11 @@ export default $(document).ready((e) => {
   });
   $('.product-form button').click((e) => {
     e.preventDefault();
-    let quantity = $('#id_quantity').val();
-    let variant = $('#id_variant').val();
+    let $target = $(e.target.form);
+    let quantity = $target.find('input[name="quantity"]').val();
+    let variant = $target.find('input[name="variant"]').val();
     $.ajax({
-      url: $('.product-form').attr('action'),
+      url: $target.attr('action'),
       type: 'POST',
       data: {
         variant: variant,
@@ -57,9 +58,9 @@ export default $(document).ready((e) => {
       }
     });
   });
-  $('.checkout__clear').click((e) => {
+  $('.checkout-preview__clear').click((e) => {
     $.ajax({
-      url: $('.checkout__clear').data('action'),
+      url: $('.checkout-preview__clear').data('action'),
       method: 'POST',
       data: {},
       success: (response) => {
