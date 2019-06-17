@@ -1,9 +1,9 @@
 import { stringify as stringifyQs } from "qs";
 import * as React from "react";
 
-import useNavigator from "../../hooks/useNavigator";
-import useNotifier from "../../hooks/useNotifier";
-import useShop from "../../hooks/useShop";
+import useNavigator from "@saleor/hooks/useNavigator";
+import useNotifier from "@saleor/hooks/useNotifier";
+import useShop from "@saleor/hooks/useShop";
 import i18n from "../../i18n";
 import { getMutationState, maybe } from "../../misc";
 import { LanguageCodeEnum, TranslationInput } from "../../types/globalTypes";
@@ -52,6 +52,9 @@ const TranslationsProducts: React.FC<TranslationsProductsProps> = ({
       });
       navigate("?", true);
     }
+  };
+  const onDiscard = () => {
+    navigate("?", true);
   };
 
   return (
@@ -106,6 +109,7 @@ const TranslationsProducts: React.FC<TranslationsProductsProps> = ({
                   )
                 }
                 onEdit={onEdit}
+                onDiscard={onDiscard}
                 onLanguageChange={lang =>
                   navigate(
                     languageEntityUrl(lang, TranslatableEntities.products, id)

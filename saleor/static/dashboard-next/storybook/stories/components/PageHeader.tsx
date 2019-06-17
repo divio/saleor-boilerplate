@@ -3,9 +3,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import PageHeader from "../../../components/PageHeader";
+import PageHeader from "@saleor/components/PageHeader";
+import Decorator from "../../Decorator";
 
 storiesOf("Generics / PageHeader", module)
+  .addDecorator(Decorator)
   .add("without title", () => <PageHeader />)
   .add("with title", () => <PageHeader title="Lorem ipsum" />)
   .add("with title icon bar", () => (

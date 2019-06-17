@@ -2,7 +2,8 @@ import { storiesOf } from "@storybook/react";
 import { RawDraftContentState } from "draft-js";
 import * as React from "react";
 
-import RichTextEditor from "../../../components/RichTextEditor";
+import RichTextEditor from "@saleor/components/RichTextEditor";
+import CardDecorator from "../../CardDecorator";
 import Decorator from "../../Decorator";
 
 export const content: RawDraftContentState = {
@@ -85,7 +86,8 @@ export const content: RawDraftContentState = {
   }
 };
 storiesOf("Generics / Rich text editor", module)
-  .addDecorator(Decorator)
+.addDecorator(CardDecorator)
+.addDecorator(Decorator)
   .add("default", () => (
     <RichTextEditor
       disabled={false}

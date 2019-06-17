@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import useNavigator from "@saleor/hooks/useNavigator";
+import useUser from "@saleor/hooks/useUser";
 import { WindowTitle } from "../components/WindowTitle";
-import useNavigator from "../hooks/useNavigator";
-import useUser from "../hooks/useUser";
 import i18n from "../i18n";
 import Navigation from "../icons/Navigation";
 import Pages from "../icons/Pages";
@@ -12,6 +12,7 @@ import SiteSettings from "../icons/SiteSettings";
 import StaffMembers from "../icons/StaffMembers";
 import Taxes from "../icons/Taxes";
 import { maybe } from "../misc";
+import { menuListUrl } from "../navigation/urls";
 import { pageListUrl } from "../pages/urls";
 import { productTypeListUrl } from "../productTypes/urls";
 import { shippingZonesListUrl } from "../shipping/urls";
@@ -54,7 +55,8 @@ export const configurationMenu: MenuItem[] = [
     description: i18n.t("Define how users can navigate through your store"),
     icon: <Navigation fontSize="inherit" viewBox="0 0 44 44" />,
     permission: PermissionEnum.MANAGE_MENUS,
-    title: i18n.t("Navigation")
+    title: i18n.t("Navigation"),
+    url: menuListUrl()
   },
   {
     description: i18n.t("View and update your site settings"),

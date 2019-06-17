@@ -9,7 +9,7 @@ import * as React from "react";
 
 import ConfirmButton, {
   ConfirmButtonTransitionState
-} from "../../../components/ConfirmButton";
+} from "@saleor/components/ConfirmButton";
 import i18n from "../../../i18n";
 
 interface TranslationFieldsSaveProps {
@@ -47,7 +47,7 @@ const TranslationFieldsSave = withStyles(styles, {
       >
         {i18n.t("Save")}
       </ConfirmButton>
-      <Button onClick={onDiscard}>{i18n.t("Discard Changes")}</Button>
+      <Button onClick={onDiscard}>{i18n.t("Discard")}</Button>
     </div>
   )
 );
