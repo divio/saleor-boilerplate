@@ -10,7 +10,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
-import * as React from "react";
+import React from "react";
 
 import Checkbox from "@saleor/components/Checkbox";
 import Date from "@saleor/components/Date";
@@ -138,10 +138,7 @@ const SaleList = withStyles(styles, {
                     <Checkbox
                       checked={isSelected}
                       disabled={disabled}
-                      onClick={event => {
-                        toggle(sale.id);
-                        event.stopPropagation();
-                      }}
+                      onChange={() => toggle(sale.id)}
                     />
                   </TableCell>
                   <TableCell className={classes.colName}>

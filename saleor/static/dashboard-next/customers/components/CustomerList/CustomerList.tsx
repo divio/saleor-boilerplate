@@ -10,7 +10,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
-import * as React from "react";
+import React from "react";
 
 import Checkbox from "@saleor/components/Checkbox";
 import Skeleton from "@saleor/components/Skeleton";
@@ -112,10 +112,7 @@ const CustomerList = withStyles(styles, { name: "CustomerList" })(
                     <Checkbox
                       checked={isSelected}
                       disabled={disabled}
-                      onClick={event => {
-                        toggle(customer.id);
-                        event.stopPropagation();
-                      }}
+                      onChange={() => toggle(customer.id)}
                     />
                   </TableCell>
                   <TableCell className={classes.colName}>

@@ -11,7 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
-import * as React from "react";
+import React from "react";
 
 import Checkbox from "@saleor/components/Checkbox";
 import IconButtonTableCell from "@saleor/components/IconButtonTableCell";
@@ -19,7 +19,7 @@ import Skeleton from "@saleor/components/Skeleton";
 import TableHead from "@saleor/components/TableHead";
 import TablePagination from "@saleor/components/TablePagination";
 import i18n from "../../../i18n";
-import { maybe, renderCollection, stopPropagation } from "../../../misc";
+import { maybe, renderCollection } from "../../../misc";
 import { ListActions, ListProps } from "../../../types";
 import { MenuList_menus_edges_node } from "../../types/MenuList";
 
@@ -105,8 +105,9 @@ const MenuList = withStyles(styles, { name: "MenuList" })(
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
+                      checked={isSelected}
                       disabled={disabled}
-                      onClick={stopPropagation(() => toggle(menu.id))}
+                      onChange={() => toggle(menu.id)}
                     />
                   </TableCell>
                   <TableCell className={classes.colTitle}>
