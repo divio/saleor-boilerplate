@@ -17,7 +17,10 @@ def move_tax_rate_to_meta(apps, schema_editor):
             "description": product_type.tax_rate,
         }
         product_types_list.append(product_type)
-    ProductType.objects.bulk_update(product_types_list, ["meta"])
+    try:
+        ProductType.objects.bulk_update(product_types_list, ["meta"])
+    except:
+        pass
 
     product_list = []
     for product in products:
@@ -28,12 +31,15 @@ def move_tax_rate_to_meta(apps, schema_editor):
             "description": product.tax_rate,
         }
         product_list.append(product)
-    Product.objects.bulk_update(product_list, ["meta"])
+    try:
+        Product.objects.bulk_update(product_list, ["meta"])
+    except:
+        pass
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [("product", "0094_auto_20190618_0430")]
+    dependencies = [("product", "0095_auto_20190618_0430")]
 
     operations = [
         migrations.RunPython(move_tax_rate_to_meta),

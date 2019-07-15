@@ -8,7 +8,7 @@ import saleor.core.utils.json_serializer
 
 class Migration(migrations.Migration):
 
-    dependencies = [("product", "0093_auto_20190521_0124")]
+    dependencies = [("product", "0094_auto_20190521_0124")]
 
     operations = [
         migrations.AddField(
