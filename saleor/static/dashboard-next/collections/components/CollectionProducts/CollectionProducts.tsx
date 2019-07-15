@@ -13,7 +13,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
-import * as React from "react";
+import React from "react";
 
 import CardTitle from "@saleor/components/CardTitle";
 import Checkbox from "@saleor/components/Checkbox";
@@ -132,10 +132,7 @@ const CollectionProducts = withStyles(styles, { name: "CollectionProducts" })(
                     <Checkbox
                       checked={isSelected}
                       disabled={disabled}
-                      onClick={event => {
-                        toggle(product.id);
-                        event.stopPropagation();
-                      }}
+                      onChange={() => toggle(product.id)}
                     />
                   </TableCell>
                   <TableCellAvatar

@@ -11,8 +11,8 @@ import MuiTableHead, {
 } from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import * as classNames from "classnames";
-import * as React from "react";
+import classNames from "classnames";
+import React from "react";
 
 import { Node } from "../../types";
 
@@ -101,10 +101,7 @@ const TableHead = withStyles(styles, {
                 })}
                 checked={selected === 0 ? false : true}
                 disabled={disabled}
-                onClick={event => {
-                  toggleAll(items, selected);
-                  event.stopPropagation();
-                }}
+                onChange={() => toggleAll(items, selected)}
               />
             ) : null}
           </TableCell>
