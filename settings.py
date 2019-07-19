@@ -2,9 +2,9 @@
 # Divio Cloud settings
 INSTALLED_ADDONS = [
     # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags is auto-generated. Manual changes will be overwritten.
-    'aldryn-addons',
-    'aldryn-django',
-    'aldryn-sso',
+    "aldryn-addons",
+    "aldryn-django",
+    "aldryn-sso",
     # </INSTALLED_ADDONS>
 ]
 
@@ -245,7 +245,7 @@ INSTALLED_APPS.extend([
     # "django.contrib.sites",
     # "django.contrib.staticfiles",
     # "django.contrib.auth",
-    # "django.contrib.postgres",
+    "django.contrib.postgres",  # required, do not remove on update
     "django.forms",
     # Local apps
     "saleor.account",

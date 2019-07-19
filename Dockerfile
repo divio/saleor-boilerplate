@@ -5,20 +5,8 @@
 # </WARNING>
 
 # <DOCKER_FROM>
-FROM divio/base:4.14-py3.6-slim-stretch
+FROM divio/base:4.15-py3.6-slim-stretch
 # </DOCKER_FROM>
-
-# <SOURCE>
-COPY . /app
-# </SOURCE>
-
-ENV STATIC_URL ${STATIC_URL:-/static/}
-
-RUN apt-get update && \
-    apt-get -y install gcc curl gnupg gettext && \
-    # Cleanup apt cache
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 # <NODE>
 ADD build /stack/boilerplate
@@ -32,27 +20,38 @@ ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules \
       PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 # </NODE>
 
-WORKDIR /app
-
 # install node dependencies
+COPY webpack.config.js app.json package.json package-lock.json tsconfig.json tslint.json webpack.d.ts /app/
 RUN npm install
-RUN STATIC_URL=${STATIC_URL} && \
-    npm run build-assets --production && \
+
+# build static files
+COPY ./saleor/static /app/saleor/static/
+COPY ./templates /app/templates/
+
+ENV STATIC_URL ${STATIC_URL:-/static/}
+
+RUN npm run build-assets --production && \
     npm run build-emails --production
+
+RUN mkdir -p /app/media /app/static /app/webpack
 RUN cp -a /app/saleor/static/. /app/static
-RUN cp -a /app/webpack-bundle.json /app/webpack/
+RUN cp -a /app/webpack-bundle.json /app/webpack
 
-# install python dependencies
-RUN pip install pipenv
-RUN pipenv install --system --deploy --dev
-
+# <PYTHON>
 ENV PIP_INDEX_URL=${PIP_INDEX_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/${WHEELS_PLATFORM:-aldryn-baseproject-py3}/+simple/} \
     WHEELSPROXY_URL=${WHEELSPROXY_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/${WHEELS_PLATFORM:-aldryn-baseproject-py3}/}
+COPY requirements.* /app/
+COPY addons-dev /app/addons-dev/
 RUN pip-reqs compile && \
     pip-reqs resolve && \
     pip install \
         --no-index --no-deps \
         --requirement requirements.urls
+# </PYTHON>
+
+# <SOURCE>
+COPY . /app
+# </SOURCE>
 
 # <STATIC>
 RUN DJANGO_MODE=build python manage.py collectstatic --noinput
