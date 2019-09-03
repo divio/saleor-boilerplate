@@ -53,7 +53,7 @@ django-storages==1.7.1
 django-templated-email==2.3.0
 django-versatileimagefield==1.10
 django-webpack-loader==0.6.0
-django==2.2.3
+django>=2.2.3
 docutils==0.14
 elasticsearch-dsl==6.0.1
 elasticsearch==6.3.1
@@ -147,7 +147,7 @@ coverage==4.5.3
 django-debug-toolbar-request-history==0.0.11
 django-debug-toolbar==1.11
 django-extensions==2.1.9
-django==2.2.3
+django>=2.2.3
 entrypoints==0.3
 execnet==1.6.0
 filelock==3.0.12
