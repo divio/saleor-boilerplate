@@ -14,16 +14,16 @@ aldryn_addons.settings.load(locals())
 # Saleor settings, modified from `saleor/settings.py`
 import ast
 import os.path
+import warnings
 
 import dj_database_url
 import dj_email_url
 import django_cache_url
+import sentry_sdk
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
-from django_prices.templatetags.prices_i18n import get_currency_fraction
-
-# custom from Divio Cloud, need to import the version from `saleor.__init__.py`
-from saleor import __version__
+from django_prices.utils.formatting import get_currency_fraction
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 def get_list(text):
@@ -57,6 +57,10 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
+ALLOWED_CLIENT_HOSTS = get_list(
+    os.environ.get("ALLOWED_CLIENT_HOSTS", "localhost,127.0.0.1")
+)
+
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 
 # Some cloud providers (Heroku) export REDIS_URL variable instead of CACHE_URL
@@ -84,6 +88,7 @@ LANGUAGES = [
     ("cs", _("Czech")),
     ("da", _("Danish")),
     ("de", _("German")),
+    ("el", _("Greek")),
     ("en", _("English")),
     ("es", _("Spanish")),
     ("es-co", _("Colombian Spanish")),
@@ -134,7 +139,9 @@ if not EMAIL_URL and SENDGRID_USERNAME and SENDGRID_PASSWORD:
         SENDGRID_USERNAME,
         SENDGRID_PASSWORD,
     )
-email_config = dj_email_url.parse(EMAIL_URL or "console://")
+email_config = dj_email_url.parse(
+    EMAIL_URL or "console://demo@example.com:console@example/"
+)
 
 EMAIL_FILE_PATH = email_config["EMAIL_FILE_PATH"]
 EMAIL_HOST_USER = email_config["EMAIL_HOST_USER"]
@@ -151,7 +158,6 @@ if ENABLE_SSL:
     SECURE_SSL_REDIRECT = not DEBUG
 
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-ORDER_FROM_EMAIL = os.getenv("ORDER_FROM_EMAIL", DEFAULT_FROM_EMAIL)
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
@@ -226,10 +232,11 @@ MIDDLEWARE = [
     "saleor.core.middleware.country",
     "saleor.core.middleware.currency",
     "saleor.core.middleware.site",
-    "saleor.core.middleware.taxes",
+    "saleor.core.middleware.extensions",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "impersonate.middleware.ImpersonateMiddleware",
     "saleor.graphql.middleware.jwt_middleware",
+    "saleor.graphql.middleware.service_account_middleware",
 ]
 
 # we use extend here as Divio Cloud also adds some packages
@@ -248,6 +255,7 @@ INSTALLED_APPS.extend([
     "django.contrib.postgres",  # required, do not remove on update
     "django.forms",
     # Local apps
+    "saleor.extensions",
     "saleor.account",
     "saleor.discount",
     "saleor.giftcard",
@@ -265,6 +273,7 @@ INSTALLED_APPS.extend([
     "saleor.data_feeds",
     "saleor.page",
     "saleor.payment",
+    "saleor.webhook",
     # External apps
     "versatileimagefield",
     "django_babel",
@@ -287,8 +296,19 @@ INSTALLED_APPS.extend([
 
 ENABLE_DEBUG_TOOLBAR = get_bool_from_env("ENABLE_DEBUG_TOOLBAR", False)
 if ENABLE_DEBUG_TOOLBAR:
-    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-    INSTALLED_APPS.append("debug_toolbar")
+    # Ensure the debug toolbar is actually installed before adding it
+    try:
+        __import__("debug_toolbar")
+    except ImportError as exc:
+        msg = (
+            f"{exc} -- Install the missing dependencies by "
+            f"running `pip install -r requirements_dev.txt`"
+        )
+        warnings.warn(msg)
+    else:
+        MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+        INSTALLED_APPS.append("debug_toolbar")
+
     DEBUG_TOOLBAR_PANELS = [
         # adds a request history to the debug toolbar
         "ddt_request_history.panels.request_history.RequestHistoryPanel",
@@ -345,11 +365,27 @@ AUTH_USER_MODEL = "account.User"
 
 LOGIN_URL = "/account/login/"
 
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 8},
+    }
+]
+
 DEFAULT_COUNTRY = os.environ.get("DEFAULT_COUNTRY", "US")
 DEFAULT_CURRENCY = os.environ.get("DEFAULT_CURRENCY", "USD")
 DEFAULT_DECIMAL_PLACES = get_currency_fraction(DEFAULT_CURRENCY)
 DEFAULT_MAX_DIGITS = 12
+DEFAULT_CURRENCY_CODE_LENGTH = 3
+
+# The default max length for the display name of the
+# sender email address.
+# Following the recommendation of https://tools.ietf.org/html/rfc5322#section-2.1.1
+DEFAULT_MAX_EMAIL_DISPLAY_NAME_LENGTH = 78
+
+# note: having multiple currencies is not supported yet
 AVAILABLE_CURRENCIES = [DEFAULT_CURRENCY]
+
 COUNTRIES_OVERRIDE = {
     "EU": pgettext_lazy(
         "Name of political and economical union of european countries", "European Union"
@@ -367,9 +403,9 @@ VATLAYER_USE_HTTPS = get_bool_from_env("VATLAYER_USE_HTTPS", False)
 # Avatax supports two ways of log in - username:password or account:license
 AVATAX_USERNAME_OR_ACCOUNT = os.environ.get("AVATAX_USERNAME_OR_ACCOUNT")
 AVATAX_PASSWORD_OR_LICENSE = os.environ.get("AVATAX_PASSWORD_OR_LICENSE")
-AVATAX_USE_SANDBOX = os.environ.get("AVATAX_USE_SANDBOX", DEBUG)
+AVATAX_USE_SANDBOX = get_bool_from_env("AVATAX_USE_SANDBOX", DEBUG)
 AVATAX_COMPANY_NAME = os.environ.get("AVATAX_COMPANY_NAME", "DEFAULT")
-AVATAX_AUTOCOMMIT = os.environ.get("AVATAX_AUTOCOMMIT", False)
+AVATAX_AUTOCOMMIT = get_bool_from_env("AVATAX_AUTOCOMMIT", False)
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
@@ -501,7 +537,7 @@ LOGOUT_ON_PASSWORD_CHANGE = False
 # SEARCH CONFIGURATION
 DB_SEARCH_ENABLED = True
 
-# support deployment-dependant elastic enviroment variable
+# support deployment-dependant elastic environment variable
 ES_URL = (
     os.environ.get("ELASTICSEARCH_URL")
     or os.environ.get("SEARCHBOX_URL")
@@ -599,87 +635,26 @@ RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 #  Sentry
 SENTRY_DSN = os.environ.get("SENTRY_DSN")
 if SENTRY_DSN:
-    INSTALLED_APPS.append("raven.contrib.django.raven_compat")
-    RAVEN_CONFIG = {"dsn": SENTRY_DSN, "release": __version__}
-
-
-SERIALIZATION_MODULES = {"json": "saleor.core.utils.json_serializer"}
-
-
-DUMMY = "dummy"
-BRAINTREE = "braintree"
-RAZORPAY = "razorpay"
-STRIPE = "stripe"
-
-CHECKOUT_PAYMENT_GATEWAYS = {
-    DUMMY: pgettext_lazy("Payment method name", "Dummy gateway")
-}
-
-PAYMENT_GATEWAYS = {
-    DUMMY: {
-        "module": "saleor.payment.gateways.dummy",
-        "config": {
-            "auto_capture": True,
-            "store_card": False,
-            "connection_params": {},
-            "template_path": "order/payment/dummy.html",
-        },
-    },
-    BRAINTREE: {
-        "module": "saleor.payment.gateways.braintree",
-        "config": {
-            "auto_capture": get_bool_from_env("BRAINTREE_AUTO_CAPTURE", True),
-            "store_card": get_bool_from_env("BRAINTREE_STORE_CARD", False),
-            "template_path": "order/payment/braintree.html",
-            "connection_params": {
-                "sandbox_mode": get_bool_from_env("BRAINTREE_SANDBOX_MODE", True),
-                "merchant_id": os.environ.get("BRAINTREE_MERCHANT_ID"),
-                "public_key": os.environ.get("BRAINTREE_PUBLIC_KEY"),
-                "private_key": os.environ.get("BRAINTREE_PRIVATE_KEY"),
-            },
-        },
-    },
-    RAZORPAY: {
-        "module": "saleor.payment.gateways.razorpay",
-        "config": {
-            "store_card": get_bool_from_env("RAZORPAY_STORE_CARD", False),
-            "auto_capture": get_bool_from_env("RAZORPAY_AUTO_CAPTURE", None),
-            "template_path": "order/payment/razorpay.html",
-            "connection_params": {
-                "public_key": os.environ.get("RAZORPAY_PUBLIC_KEY"),
-                "secret_key": os.environ.get("RAZORPAY_SECRET_KEY"),
-                "prefill": get_bool_from_env("RAZORPAY_PREFILL", True),
-                "store_name": os.environ.get("RAZORPAY_STORE_NAME"),
-                "store_image": os.environ.get("RAZORPAY_STORE_IMAGE"),
-            },
-        },
-    },
-    STRIPE: {
-        "module": "saleor.payment.gateways.stripe",
-        "config": {
-            "store_card": get_bool_from_env("STRIPE_STORE_CARD", False),
-            "auto_capture": get_bool_from_env("STRIPE_AUTO_CAPTURE", True),
-            "template_path": "order/payment/stripe.html",
-            "connection_params": {
-                "public_key": os.environ.get("STRIPE_PUBLIC_KEY"),
-                "secret_key": os.environ.get("STRIPE_SECRET_KEY"),
-                "store_name": os.environ.get("STRIPE_STORE_NAME", "Saleor"),
-                "store_image": os.environ.get("STRIPE_STORE_IMAGE", None),
-                "prefill": get_bool_from_env("STRIPE_PREFILL", True),
-                "remember_me": os.environ.get("STRIPE_REMEMBER_ME", True),
-                "locale": os.environ.get("STRIPE_LOCALE", "auto"),
-                "enable_billing_address": os.environ.get(
-                    "STRIPE_ENABLE_BILLING_ADDRESS", False
-                ),
-                "enable_shipping_address": os.environ.get(
-                    "STRIPE_ENABLE_SHIPPING_ADDRESS", False
-                ),
-            },
-        },
-    },
-}
+    sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()])
 
 GRAPHENE = {
     "RELAY_CONNECTION_ENFORCE_FIRST_OR_LAST": True,
     "RELAY_CONNECTION_MAX_LIMIT": 100,
 }
+
+EXTENSIONS_MANAGER = "saleor.extensions.manager.ExtensionsManager"
+
+PLUGINS = [
+    "saleor.extensions.plugins.avatax.plugin.AvataxPlugin",
+    "saleor.extensions.plugins.vatlayer.plugin.VatlayerPlugin",
+    "saleor.extensions.plugins.webhook.plugin.WebhookPlugin",
+    "saleor.payment.gateways.dummy.plugin.DummyGatewayPlugin",
+    "saleor.payment.gateways.stripe.plugin.StripeGatewayPlugin",
+    "saleor.payment.gateways.braintree.plugin.BraintreeGatewayPlugin",
+    "saleor.payment.gateways.razorpay.plugin.RazorpayGatewayPlugin",
+]
+
+# Whether DraftJS should be used be used instead of HTML
+# True to use DraftJS (JSON based), for the 2.0 dashboard
+# False to use the old editor from dashboard 1.0
+USE_JSON_CONTENT = get_bool_from_env("USE_JSON_CONTENT", False)
