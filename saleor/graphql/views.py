@@ -113,11 +113,11 @@ class GraphQLView(View):
     def parse_query(self, query: str) -> (GraphQLDocument, ExecutionResult):
         """Attempt to parse a query (mandatory) to a gql document object.
 
-        If no query was given, it returns an error.
+        If no query was given or query is not a string, it returns an error.
         If the query is invalid, it returns an error as well.
         Otherwise, it returns the parsed gql document.
         """
-        if not query:
+        if not query or not isinstance(query, str):
             return (
                 None,
                 ExecutionResult(
@@ -200,13 +200,16 @@ class GraphQLView(View):
 
         logger.error("Exception information:", exc_info=exc)
 
+        result["extensions"] = {"exception": {"code": type(exc).__name__}}
         if settings.DEBUG:
             lines = []
-            for line in traceback.format_exception(type(exc), exc, exc.__traceback__):
-                lines.extend(line.rstrip().splitlines())
-            result["extensions"] = {
-                "exception": {"code": type(exc).__name__, "stacktrace ": lines}
-            }
+
+            if isinstance(exc, BaseException):
+                for line in traceback.format_exception(
+                    type(exc), exc, exc.__traceback__
+                ):
+                    lines.extend(line.rstrip().splitlines())
+            result["extensions"]["exception"]["stacktrace"] = lines
         return result
 
 

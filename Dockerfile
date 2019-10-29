@@ -21,7 +21,7 @@ ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules \
 # </NODE>
 
 # install node dependencies
-COPY webpack.config.js app.json package.json package-lock.json tsconfig.json tslint.json webpack.d.ts /app/
+COPY webpack.config.js app.json package.json package-lock.json /app/
 RUN npm install
 
 # build static files
