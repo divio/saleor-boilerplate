@@ -3,7 +3,7 @@
 # version of Saleor. Please check releases notes before run it.
 
 echo "----- Download latest Saleor release archive -----"
-wget https://api.github.com/repos/mirumee/saleor/zipball/2.9.0 -O saleor.zip
+wget https://api.github.com/repos/mirumee/saleor/zipball/2.9.1 -O saleor.zip
 
 echo "----- Unzip archive -----"
 unzip -q saleor.zip && mv mirumee-saleor-*/ tmp_saleor
