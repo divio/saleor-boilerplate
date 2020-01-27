@@ -45,7 +45,6 @@ find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
 echo "Manually implement the 'saleor/settings.py' changes to 'settings.py'"
 echo "Manually implement the 'saleor/urls.py' changes to 'urls.py'"
-echo "Manually generate requirements.in from: https://pypi.org/project/pipenv-to-requirements/"
 echo "Manually update the requirements.in file as there are some special cases"
 echo "Check the changelog for further adaptions: https://github.com/mirumee/saleor"
 echo "----- Done -----"
