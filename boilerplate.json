@@ -1,13 +1,13 @@
 {
-    "package-name": "saleor",
-    "identifier": "saleor",
-    "templates": [],
-    "version": "2.9.0.2",
-    "excluded": [
-        "LICENSE.txt",
-        ".DS_Store",
-        ".vscode",
-        "data/",
-        "update_saleor.sh"
-    ]
+  "package-name": "saleor",
+  "identifier": "saleor",
+  "templates": [],
+  "version": "2.9.1.1",
+  "excluded": [
+    "LICENSE.txt",
+    ".DS_Store",
+    ".vscode",
+    "data/",
+    "update_saleor.sh"
+  ]
 }
