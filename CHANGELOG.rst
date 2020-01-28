@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-2.9.1 (unreleased)
+2.9.1 (2020-01-28)
 ==================
 
 * Updated Saleor to 2.9.1 version
