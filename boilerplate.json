@@ -2,7 +2,7 @@
   "package-name": "saleor",
   "identifier": "saleor",
   "templates": [],
-  "version": "2.9.1.1",
+  "version": "2.9.1.2",
   "excluded": [
     "LICENSE.txt",
     ".DS_Store",
